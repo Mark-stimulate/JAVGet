@@ -1,4 +1,4 @@
-module github.com/satoing/gallery
+module github.com/Mark-stimulate/AVGrabber/backend
 
 go 1.22.6
 

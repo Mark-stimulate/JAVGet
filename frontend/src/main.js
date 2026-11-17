@@ -2,10 +2,10 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-const key = sessionStorage.getItem('nassav_api_key') || prompt('请输入 NASSAV 访问密钥') || ''
+const key = sessionStorage.getItem('avgrabber_api_key') || sessionStorage.getItem('nassav_api_key') || prompt('请输入 AVGrabber 访问密钥') || ''
 if (key) {
-    sessionStorage.setItem('nassav_api_key', key)
-    document.cookie = `nassav_key=${encodeURIComponent(key)}; Path=/file/; SameSite=Strict`
+    sessionStorage.setItem('avgrabber_api_key', key)
+    document.cookie = `avgrabber_key=${encodeURIComponent(key)}; Path=/file/; SameSite=Strict`
 }
 
 const app = createApp(App)

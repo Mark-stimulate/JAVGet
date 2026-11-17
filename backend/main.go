@@ -30,12 +30,12 @@ const (
 
 // 全局缓存
 var (
-	basePath = envOr("NASSAV_MEDIA_PATH", "./media")
-	apiKey = os.Getenv("NASSAV_API_KEY")
+	basePath = envCompat("AVGRABBER_MEDIA_PATH", "NASSAV_MEDIA_PATH", "./media")
+	apiKey = envCompat("AVGRABBER_API_KEY", "NASSAV_API_KEY", "")
 	validVideoID = regexp.MustCompile(`^[A-Za-z0-9]+(-[A-Za-z0-9]+)*-[0-9]+$`)
 	videoListCache []VideoItem
 	cacheMutex     sync.RWMutex
-	logger         = log.New(os.Stdout, "[MissAV] ", log.LstdFlags|log.Lshortfile)
+	logger         = log.New(os.Stdout, "[AVGrabber] ", log.LstdFlags|log.Lshortfile)
 )
 
 // VideoItem 表示视频列表项
@@ -62,8 +62,9 @@ type NfoFile struct {
 	Premiered   string   `xml:"premiered"`
 }
 
-func envOr(name, fallback string) string {
+func envCompat(name, legacy, fallback string) string {
 	if value := os.Getenv(name); value != "" { return value }
+	if value := os.Getenv(legacy); value != "" { return value }
 	return fallback
 }
 
@@ -71,7 +72,8 @@ func requireAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorized := r.Header.Get("Authorization") == "Bearer "+apiKey
 		if !authorized && r.Method == http.MethodGet && strings.HasPrefix(r.URL.Path, "/file/") {
-			cookie, err := r.Cookie("nassav_key")
+			cookie, err := r.Cookie("avgrabber_key")
+			if err != nil { cookie, err = r.Cookie("nassav_key") }
 			authorized = err == nil && cookie.Value == apiKey
 		}
 		if !authorized {
@@ -85,7 +87,7 @@ func requireAuth(next http.Handler) http.Handler {
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 允许的域名（生产环境应替换为实际前端域名）
-		w.Header().Set("Access-Control-Allow-Origin", envOr("NASSAV_FRONTEND_ORIGIN", "http://localhost:5173"))
+		w.Header().Set("Access-Control-Allow-Origin", envCompat("AVGRABBER_FRONTEND_ORIGIN", "NASSAV_FRONTEND_ORIGIN", "http://localhost:5173"))
 
 		// 允许的HTTP方法
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
@@ -107,8 +109,8 @@ func enableCORS(next http.Handler) http.Handler {
 }
 
 func main() {
-	if apiKey == "" { log.Fatal("NASSAV_API_KEY must be set") }
-	logger.Println("Starting MissAV server...")
+	if apiKey == "" { log.Fatal("AVGRABBER_API_KEY must be set") }
+	logger.Println("Starting AVGrabber server...")
 
 	// 初始化缓存
 	if err := buildVideoListCache(); err != nil {
@@ -131,7 +133,7 @@ func main() {
 	// 确保端口号是干净的（如 "8080" 而不是 ":8080"）
 	port := strings.TrimPrefix(serverPort, ":")
 
-	listener, err := net.Listen("tcp", net.JoinHostPort(envOr("NASSAV_BIND", "127.0.0.1"), port))
+	listener, err := net.Listen("tcp", net.JoinHostPort(envCompat("AVGRABBER_BIND", "NASSAV_BIND", "127.0.0.1"), port))
 	if err != nil { log.Fatal(err) }
 	logger.Printf("Server listening on %s", listener.Addr())
 	log.Fatal(http.Serve(listener, handler))

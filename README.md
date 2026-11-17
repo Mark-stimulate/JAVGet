@@ -1,6 +1,6 @@
-# NASSAV（个人修改版）
+# AVGrabber
 
-基于 [Satoing/NASSAV](https://github.com/Satoing/NASSAV) 修改的 NAS 影音下载、元数据整理和网页浏览工具。保留原项目 MIT 版权声明，详见 [LICENSE](LICENSE)。本仓库是个人修改版，与上游项目没有从属或官方维护关系。
+基于 [Satoing/NASSAV](https://github.com/Satoing/NASSAV) 修改的影音下载、元数据整理和网页浏览工具，可在桌面或服务器环境使用。保留原项目 MIT 版权声明，详见 [LICENSE](LICENSE)。本仓库是个人修改版，与上游项目没有从属或官方维护关系。
 
 ## 功能与状态
 
@@ -22,7 +22,7 @@ python metadata.py
 
 ## 浏览服务（实验性）
 
-在项目根目录先完成 Python 配置，创建媒体目录并初始化数据库。设置环境变量：`NASSAV_API_KEY` 为自行生成的随机十六进制密钥；`NASSAV_MEDIA_PATH` 为媒体目录绝对路径；`NASSAV_FRONTEND_ORIGIN` 默认为 `http://localhost:5173`；`NASSAV_BIND` 默认为 `127.0.0.1`。进入 `backend`，运行 `go build -o main` 后启动 `./main`。
+在项目根目录先完成 Python 配置，创建媒体目录并初始化数据库。设置环境变量：`AVGRABBER_API_KEY` 为自行生成的随机十六进制密钥；`AVGRABBER_MEDIA_PATH` 为媒体目录绝对路径；`AVGRABBER_FRONTEND_ORIGIN` 默认为 `http://localhost:5173`；`AVGRABBER_BIND` 默认为 `127.0.0.1`。进入 `backend`，运行 `go build -o main` 后启动 `./main`。原来的 `NASSAV_` 环境变量仍可使用，若同时设置则优先使用 `AVGRABBER_`。
 
 前端进入 `frontend`，运行 `npm ci` 和 `npm run dev`。默认连接 `http://localhost:31471`，可通过构建环境变量 `VITE_API_BASE` 修改。打开网页时输入同一密钥。前后端应使用同一主机名（例如均使用 localhost），以便图片请求携带浏览器会话 cookie。
 
