@@ -39,13 +39,9 @@ func TestVideoIDs(t *testing.T) {
     }
 }
 
-func TestEnvironmentCompatibility(t *testing.T) {
+func TestEnvironmentDefault(t *testing.T) {
     t.Setenv("JAVGET_TEST", "")
-    t.Setenv("AVGRABBER_TEST", "")
-    t.Setenv("NASSAV_TEST", "legacy")
-    if value := envCompat("JAVGET_TEST", "AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "legacy" { t.Fatalf("oldest setting ignored: %s", value) }
-    t.Setenv("AVGRABBER_TEST", "previous")
-    if value := envCompat("JAVGET_TEST", "AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "previous" { t.Fatalf("previous setting ignored: %s", value) }
+    if value := envOr("JAVGET_TEST", "default"); value != "default" { t.Fatalf("unexpected default: %s", value) }
     t.Setenv("JAVGET_TEST", "current")
-    if value := envCompat("JAVGET_TEST", "AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "current" { t.Fatalf("new setting should take precedence: %s", value) }
+    if value := envOr("JAVGET_TEST", "default"); value != "current" { t.Fatalf("setting ignored: %s", value) }
 }

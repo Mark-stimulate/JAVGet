@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-const key = sessionStorage.getItem('javget_api_key') || sessionStorage.getItem('avgrabber_api_key') || sessionStorage.getItem('nassav_api_key') || prompt('请输入 JAVGet 访问密钥') || ''
+const key = sessionStorage.getItem('javget_api_key') || prompt('请输入 JAVGet 访问密钥') || ''
 if (key) {
     sessionStorage.setItem('javget_api_key', key)
     document.cookie = `javget_key=${encodeURIComponent(key)}; Path=/file/; SameSite=Strict`
