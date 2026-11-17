@@ -22,7 +22,7 @@ func TestAuthenticatedRoutes(t *testing.T) {
         t.Run(tc.name, func(t *testing.T) {
             req := httptest.NewRequest(tc.method, tc.path, nil)
             if tc.token != "" { req.Header.Set("Authorization", "Bearer "+tc.token) }
-            if tc.cookie != "" { req.AddCookie(&http.Cookie{Name: "avgrabber_key", Value: tc.cookie}) }
+            if tc.cookie != "" { req.AddCookie(&http.Cookie{Name: "javget_key", Value: tc.cookie}) }
             response := httptest.NewRecorder()
             handler.ServeHTTP(response, req)
             if response.Code != tc.want { t.Fatalf("got %d, want %d", response.Code, tc.want) }
@@ -40,9 +40,12 @@ func TestVideoIDs(t *testing.T) {
 }
 
 func TestEnvironmentCompatibility(t *testing.T) {
+    t.Setenv("JAVGET_TEST", "")
     t.Setenv("AVGRABBER_TEST", "")
     t.Setenv("NASSAV_TEST", "legacy")
-    if value := envCompat("AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "legacy" { t.Fatalf("legacy setting ignored: %s", value) }
-    t.Setenv("AVGRABBER_TEST", "current")
-    if value := envCompat("AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "current" { t.Fatalf("new setting should take precedence: %s", value) }
+    if value := envCompat("JAVGET_TEST", "AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "legacy" { t.Fatalf("oldest setting ignored: %s", value) }
+    t.Setenv("AVGRABBER_TEST", "previous")
+    if value := envCompat("JAVGET_TEST", "AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "previous" { t.Fatalf("previous setting ignored: %s", value) }
+    t.Setenv("JAVGET_TEST", "current")
+    if value := envCompat("JAVGET_TEST", "AVGRABBER_TEST", "NASSAV_TEST", "default"); value != "current" { t.Fatalf("new setting should take precedence: %s", value) }
 }

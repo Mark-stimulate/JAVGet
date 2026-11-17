@@ -1,4 +1,4 @@
-# AVGrabber
+# JAVGet
 
 基于 [Satoing/NASSAV](https://github.com/Satoing/NASSAV) 修改的影音下载、元数据整理和网页浏览工具，可在桌面或服务器环境使用。保留原项目 MIT 版权声明，详见 [LICENSE](LICENSE)。本仓库是个人修改版，与上游项目没有从属或官方维护关系。
 
@@ -22,7 +22,7 @@ python metadata.py
 
 ## 浏览服务（实验性）
 
-在项目根目录先完成 Python 配置，创建媒体目录并初始化数据库。设置环境变量：`AVGRABBER_API_KEY` 为自行生成的随机十六进制密钥；`AVGRABBER_MEDIA_PATH` 为媒体目录绝对路径；`AVGRABBER_FRONTEND_ORIGIN` 默认为 `http://localhost:5173`；`AVGRABBER_BIND` 默认为 `127.0.0.1`。进入 `backend`，运行 `go build -o main` 后启动 `./main`。原来的 `NASSAV_` 环境变量仍可使用，若同时设置则优先使用 `AVGRABBER_`。
+在项目根目录先完成 Python 配置，创建媒体目录并初始化数据库。设置环境变量：`JAVGET_API_KEY` 为自行生成的随机十六进制密钥；`JAVGET_MEDIA_PATH` 为媒体目录绝对路径；`JAVGET_FRONTEND_ORIGIN` 默认为 `http://localhost:5173`；`JAVGET_BIND` 默认为 `127.0.0.1`。进入 `backend`，运行 `go build -o main` 后启动 `./main`。为了兼容旧部署，旧的 `AVGRABBER_` 和 `NASSAV_` 环境变量仍可使用；若同时设置，优先使用 `JAVGET_`。
 
 前端进入 `frontend`，运行 `npm ci` 和 `npm run dev`。默认连接 `http://localhost:31471`，可通过构建环境变量 `VITE_API_BASE` 修改。打开网页时输入同一密钥。前后端应使用同一主机名（例如均使用 localhost），以便图片请求携带浏览器会话 cookie。
 
@@ -30,7 +30,7 @@ python metadata.py
 
 ## Docker
 
-Dockerfile 构建下载器镜像而非完整网页服务，并从上游构建 m3u8 下载工具。构建时不包含实际配置和本地数据；运行时需挂载配置、数据库和媒体目录。请根据 NAS 路径调整 `cfg/configs.json` 与挂载路径，并先在测试环境验证。
+Dockerfile 构建下载器镜像而非完整网页服务，并从上游构建 m3u8 下载工具。镜像工作目录为 `/JAVGet`；旧部署如果使用 `/AVGrabber` 挂载路径，需改为 `/JAVGet`。构建时不包含实际配置和本地数据；运行时需挂载配置、数据库和媒体目录。请根据实际路径调整 `cfg/configs.json` 与挂载路径，并先在测试环境验证。
 
 ## 已知限制
 

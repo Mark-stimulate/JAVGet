@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:31471'
-const auth = () => ({ headers: { Authorization: `Bearer ${sessionStorage.getItem('avgrabber_api_key') || ''}` } })
+const auth = () => ({ headers: { Authorization: `Bearer ${sessionStorage.getItem('javget_api_key') || ''}` } })
 
 export default {
     async getVideoList() {

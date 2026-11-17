@@ -3,7 +3,7 @@
     <header class="app-header">
       <div class="header-container">
         <router-link to="/" class="logo">
-          <h1>AVGrabber</h1>
+          <h1>JAVGet</h1>
         </router-link>
         
         <div class="search-box">
@@ -34,7 +34,7 @@
     </main>
 
     <footer class="app-footer">
-      <p>AVGrabber · 你的影音下载助手</p>
+      <p>JAVGet · 你的影音下载助手</p>
     </footer>
   </div>
 </template>

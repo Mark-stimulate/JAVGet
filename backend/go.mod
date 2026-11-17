@@ -1,4 +1,4 @@
-module github.com/Mark-stimulate/AVGrabber/backend
+module github.com/Mark-stimulate/JAVGet/backend
 
 go 1.22.6
 

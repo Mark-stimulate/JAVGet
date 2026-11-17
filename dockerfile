@@ -8,9 +8,9 @@ RUN git clone https://github.com/Greyh4t/m3u8-Downloader-Go.git src && \
     cd src && git checkout tags/v1.5.2 && \
     go build -o /build/m3u8-Downloader-Go
 
-FROM alpine:latest AS avgrabber
+FROM alpine:latest AS javget
 
-WORKDIR /AVGrabber
+WORKDIR /JAVGet
 
 RUN apk add --no-cache ffmpeg python3 && \
     rm -rf /var/cache/apk/*
